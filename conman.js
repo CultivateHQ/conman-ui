@@ -785,6 +785,73 @@ Elm.Color.make = function (_elm) {
                        ,darkGray: darkGray};
    return _elm.Color.values;
 };
+Elm.Contact = Elm.Contact || {};
+Elm.Contact.make = function (_elm) {
+   "use strict";
+   _elm.Contact = _elm.Contact || {};
+   if (_elm.Contact.values)
+   return _elm.Contact.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Contact",
+   $Basics = Elm.Basics.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var view = function (contact) {
+      return A2($Html.div,
+      _L.fromArray([$Html$Attributes.$class("contact")]),
+      _L.fromArray([A2($Html.h2,
+                   _L.fromArray([$Html$Attributes.$class("contact__name")]),
+                   _L.fromArray([$Html.text(contact.name)]))
+                   ,A2($Html.div,
+                   _L.fromArray([$Html$Attributes.$class("contact__email")]),
+                   _L.fromArray([A2($Html.span,
+                                _L.fromArray([]),
+                                _L.fromArray([$Html.text("Email:")]))
+                                ,A2($Html.a,
+                                _L.fromArray([$Html$Attributes.href(A2($Basics._op["++"],
+                                "mailto:",
+                                contact.email))]),
+                                _L.fromArray([$Html.text(contact.email)]))]))
+                   ,A2($Html.div,
+                   _L.fromArray([$Html$Attributes.$class("contact__phone")]),
+                   _L.fromArray([A2($Html.span,
+                                _L.fromArray([]),
+                                _L.fromArray([$Html.text("Phone:")]))
+                                ,A2($Html.a,
+                                _L.fromArray([$Html$Attributes.href(A2($Basics._op["++"],
+                                "tel:",
+                                contact.phone))]),
+                                _L.fromArray([$Html.text(contact.phone)]))]))]));
+   };
+   var Model = F3(function (a,
+   b,
+   c) {
+      return {_: {}
+             ,email: b
+             ,name: a
+             ,phone: c};
+   });
+   var init = F3(function (name,
+   email,
+   phone) {
+      return A3(Model,
+      name,
+      email,
+      phone);
+   });
+   _elm.Contact.values = {_op: _op
+                         ,Model: Model
+                         ,init: init
+                         ,view: view};
+   return _elm.Contact.values;
+};
 Elm.Debug = Elm.Debug || {};
 Elm.Debug.make = function (_elm) {
    "use strict";
@@ -4059,55 +4126,17 @@ Elm.Main.make = function (_elm) {
    _L = _N.List.make(_elm),
    $moduleName = "Main",
    $Basics = Elm.Basics.make(_elm),
-   $Html = Elm.Html.make(_elm),
-   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Contact = Elm.Contact.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
-   var view = function (contact) {
-      return A2($Html.div,
-      _L.fromArray([$Html$Attributes.$class("contact")]),
-      _L.fromArray([A2($Html.h2,
-                   _L.fromArray([$Html$Attributes.$class("contact__name")]),
-                   _L.fromArray([$Html.text(contact.name)]))
-                   ,A2($Html.div,
-                   _L.fromArray([$Html$Attributes.$class("contact__email")]),
-                   _L.fromArray([A2($Html.span,
-                                _L.fromArray([]),
-                                _L.fromArray([$Html.text("Email:")]))
-                                ,A2($Html.a,
-                                _L.fromArray([$Html$Attributes.href(A2($Basics._op["++"],
-                                "mailto:",
-                                contact.email))]),
-                                _L.fromArray([$Html.text(contact.email)]))]))
-                   ,A2($Html.div,
-                   _L.fromArray([$Html$Attributes.$class("contact__phone")]),
-                   _L.fromArray([A2($Html.span,
-                                _L.fromArray([]),
-                                _L.fromArray([$Html.text("Phone:")]))
-                                ,A2($Html.a,
-                                _L.fromArray([$Html$Attributes.href(A2($Basics._op["++"],
-                                "tel:",
-                                contact.phone))]),
-                                _L.fromArray([$Html.text(contact.phone)]))]))]));
-   };
-   var Model = F3(function (a,
-   b,
-   c) {
-      return {_: {}
-             ,email: b
-             ,name: a
-             ,phone: c};
-   });
-   var main = view(A3(Model,
+   var main = $Contact.view(A3($Contact.init,
    "Bobby Tables",
    "bobby@example.com",
    "01 234 5678"));
    _elm.Main.values = {_op: _op
-                      ,main: main
-                      ,Model: Model
-                      ,view: view};
+                      ,main: main};
    return _elm.Main.values;
 };
 Elm.Maybe = Elm.Maybe || {};
