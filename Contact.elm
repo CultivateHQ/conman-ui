@@ -4,7 +4,10 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 
 import Effects
+import Task
 
+import Http
+import Json.Decode as Json exposing ((:=))
 
 -- MODEL
 
@@ -15,19 +18,26 @@ type alias Model =
   }
 
 
-init name email phone =
-  ( Model name email phone
-  , Effects.none
+init =
+  ( Model "" "" ""
+  , fetchContact
   )
 
 
 -- UPDATE
 
-type Action = NoOp
+type Action
+  = NoOp
+  | Refresh (Maybe Model)
 
 update action model =
   case action of
     NoOp -> (model, Effects.none)
+
+    Refresh contact ->
+      ( Maybe.withDefault model contact
+      , Effects.none
+      )
 
 
 -- VIEW
@@ -44,3 +54,22 @@ view address contact =
     , a [ href ("tel:" ++ contact.phone) ] [ text contact.phone ]
     ]
   ]
+
+
+-- EFFECTS
+
+fetchContact =
+  Http.get decodeContact "http://localhost:4000/api/contacts/1"
+    |> Task.toMaybe
+    |> Task.map Refresh
+    |> Effects.task
+
+
+decodeContact =
+  let contact =
+        Json.object3 (\name email phone -> (Model name email phone))
+          ("name" := Json.string)
+          ("email" := Json.string)
+          ("phone" := Json.string)
+  in
+      Json.at ["data"] contact
